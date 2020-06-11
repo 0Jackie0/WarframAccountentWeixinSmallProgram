@@ -1,0 +1,39 @@
+<!--pages/mainpage/mainpage.wxml-->
+
+<view class="searchArea">
+  Search: <input type="text" class="roundTextBox"></input>
+</view>
+
+<view class="filterArea">
+  <picker bindchange="changeFilter" value="{{index}}" range="{{itemTypeList.listContent}}" range-key="typeName">
+    <view class="pickerArea">
+      Filter By：{{itemTypeList.listContent[itemTypeList.selected].typeName}}
+    </view>
+  </picker>
+  <picker bindchange="changeOrder" value="{{index}}" range="{{orderList.listContent}}" range-key="orderName">
+    <view class="pickerArea">
+      Order By：{{orderList.listContent[orderList.selected].orderName}}
+    </view>
+  </picker>
+</view>
+
+<view class="listHeaderArea">
+  <text>Total Quantity: {{totalQuantity}}</text>
+  <text> Total Price: {{totalPrice}}</text>
+</view>
+
+<view class="listArea">
+  <view wx:for="{{itemList}}" wx:key="itemId" class="listContentArea">
+    <image src="{{item.imageString != '' ? 'data:image/png;base64,' + item.imageString : '../../drawable/220px-Warframe_Cover_Art.png'}}" mode="aspectFit" class="itemImageSize"/>
+    <view class="informationArea">
+      <text>Item Name: {{item.name}}</text>
+      <text>Quantity: {{item.quantity}}</text>
+      <text>Excepted Price: {{item.eprice}}</text>
+      <text>Base Price: {{item.bprice}}</text>
+    </view>
+    <view class="listButtonArea">
+      <button style="width:50rpx" class="buttonArea"><image src="../../drawable/up-arrow.png" class="iconSize" mode="aspectFit"/></button>
+      <button style="width:50rpx" class="buttonArea"><image src="../../drawable/down-arrow.png" class="iconSize" mode="aspectFit"/></button>
+    </view>
+  </view>
+</view>

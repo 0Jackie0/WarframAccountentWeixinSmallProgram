@@ -1,0 +1,14 @@
+{
+    "pages": [
+        "pages/mainpage/mainpage",
+        "pages/itemPage/itemPage"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "black"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}
