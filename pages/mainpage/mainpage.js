@@ -1,4 +1,6 @@
 // pages/mainpage/mainpage.js
+const APP = getApp()
+
 Page({
   /**
    * 页面的初始数据
@@ -7,42 +9,8 @@ Page({
     itemList: [],
     totalQuantity: 0,
     totalPrice: 0,
-    itemTypeList:
-    {
-      selected: 0,
-      listContent: [
-        {
-          typeId: 1,
-          typeName: "Type 1"
-        },
-        {
-          typeId: 2,
-          typeName: "Type 2"
-        },
-        {
-          typeId: 3,
-          typeName: "Type 3"
-        },
-        {
-          typeId: 4,
-          typeName: "Type 4"
-        },
-      ]
-    },
-    orderList: 
-    {
-      selected: 0,
-      listContent: [
-        {
-          orderId: 1,
-          orderName: "Name"
-        },
-        {
-          orderId: 2,
-          orderName: "Quantity"
-        }
-      ]
-    }
+    itemTypeList: APP.globalData.itemTypeList,
+    orderList: APP.globalData.orderList
   },
 
   /**
@@ -50,29 +18,43 @@ Page({
    */
   onLoad: function (options) {
     var hostPage = this
-    wx.request({
-      url: 'http://localhost:28590/api/item',
-      method: "GET",
-      success: function(respond)
-      {
-        // console.log(respond)
-        let totalPrice = 0
-        let totalQuantity = 0
-        for(let itemIndex in respond.data)
-        {
-          totalPrice += respond.data[itemIndex].eprice * respond.data[itemIndex].quantity;
-          totalQuantity += respond.data[itemIndex].quantity;
-        }
 
-        hostPage.setData(
+    wx.request({
+      url: 'http://localhost:28590/api/type',
+      method: "GET",
+      success: function(typeRespond)
+      {
+        wx.request({
+          url: 'http://localhost:28590/api/item',
+          method: "GET",
+          success: function(itemRespond)
           {
-            itemList: respond.data,
-            totalPrice: totalPrice,
-            totalQuantity: totalQuantity
+            APP.globalData.itemTypeList.listContent = typeRespond.data
+            APP.globalData.itemList = itemRespond.data
+
+            // console.log(respond)
+            let totalPrice = 0
+            let totalQuantity = 0
+            for(let itemIndex in itemRespond.data)
+            {
+              totalPrice += itemRespond.data[itemIndex].eprice * itemRespond.data[itemIndex].quantity;
+              totalQuantity += itemRespond.data[itemIndex].quantity;
+            }
+    
+            hostPage.setData(
+              {
+                itemList: itemRespond.data,
+                itemTypeList: APP.globalData.itemTypeList,
+                totalPrice: totalPrice,
+                totalQuantity: totalQuantity
+              }
+            )
           }
-        )
+        })
       }
     })
+
+    
   },
   changeFilter: function(event)
   {
@@ -97,6 +79,23 @@ Page({
         orderList: tempOrderObj
       }
     )
+  },
+  changePage: function(event)
+  {
+    if(event.currentTarget.dataset.action == 'edit')
+    {
+      APP.globalData.itemTypeList = this.data.itemTypeList
+      APP.globalData.itemList = this.data.itemList
+      wx.navigateTo({
+        url: '../itemPage/itemPage?targetId=' + event.currentTarget.dataset.targetid + "&targetIndex=" + event.currentTarget.dataset.targetIndex,
+      })
+    }
+    else
+    {
+      wx.navigateTo({
+        url: '../itemPage/itemPage',
+      })
+    }
   },
 
   /**

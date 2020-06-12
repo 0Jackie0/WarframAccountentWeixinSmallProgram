@@ -7,6 +7,11 @@ page
   background-color: #fcfcfc;
 }
 
+.addButtonArea
+{
+  margin-bottom: 20rpx;
+}
+
 .searchArea
 {
   margin-bottom: 20rpx;
@@ -48,7 +53,7 @@ page
 .listArea
 {
   overflow-y: auto;
-  height: 945rpx;
+  height: 785rpx;
   width: 95%;
   background-color: #f0ffff;
   border: 5rpx solid #bde0ff;

@@ -1,5 +1,9 @@
 <!--pages/mainpage/mainpage.wxml-->
 
+<view class="addButtonArea">
+  <button type="primary" bindtap="changePage" data-action="add">Add</button>
+</view>
+
 <view class="searchArea">
   Search: <input type="text" class="roundTextBox"></input>
 </view>
@@ -23,14 +27,15 @@
 </view>
 
 <view class="listArea">
-  <view wx:for="{{itemList}}" wx:key="itemId" class="listContentArea">
-    <image src="{{item.imageString != '' ? 'data:image/png;base64,' + item.imageString : '../../drawable/220px-Warframe_Cover_Art.png'}}" mode="aspectFit" class="itemImageSize"/>
-    <view class="informationArea">
+  <view wx:for="{{itemList}}" wx:key="itemId" wx:for-index="index" class="listContentArea">
+    <image bindtap="changePage" data-action="edit" data-targetid="{{item.itemId}}" data-target-index="{{index}}" src="{{item.imageString != '' ? 'data:image/png;base64,' + item.imageString : '../../drawable/220px-Warframe_Cover_Art.png'}}" mode="aspectFit" class="itemImageSize"/>
+    <view class="informationArea" bindtap="changePage" data-action="edit" data-targetid="{{item.itemId}}" data-target-index="{{index}}">
       <text>Item Name: {{item.name}}</text>
       <text>Quantity: {{item.quantity}}</text>
       <text>Excepted Price: {{item.eprice}}</text>
       <text>Base Price: {{item.bprice}}</text>
     </view>
+    
     <view class="listButtonArea">
       <button style="width:50rpx" class="buttonArea"><image src="../../drawable/up-arrow.png" class="iconSize" mode="aspectFit"/></button>
       <button style="width:50rpx" class="buttonArea"><image src="../../drawable/down-arrow.png" class="iconSize" mode="aspectFit"/></button>

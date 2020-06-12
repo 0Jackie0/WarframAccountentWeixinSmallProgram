@@ -1,2 +1,36 @@
 <!--pages/itemPage/itemPage.wxml-->
-<text>pages/itemPage/itemPage.wxml</text>
+<view class="topArea">
+    <image src="{{targetItem.imageString != '' ? 'data:image/png;base64,' + targetItem.imageString : '../../drawable/220px-Warframe_Cover_Art.png'}}" mode="aspectFit" class="itemImageSize"/>
+    <view class="nameQuantityArea">
+        <view>
+            Item Name: <input class="roundTextBox" type="text" value="{{targetItem.name}}" placeholder="Item Name"/>
+        </view>
+        <view>
+            Quantity: <input class="roundTextBox" type="number" value="{{targetItem.quantity}}"/>
+        </view>
+    </view>
+</view>
+
+<view class="midArea">
+    <picker bindchange="changeType" value="{{index}}" range="{{itemTypeList.listContent}}" range-key="typeName">
+        <view class="pickerArea">
+            Item Type：{{itemTypeList.listContent[itemTypeList.selected].typeName}}
+        </view>
+    </picker>
+    <view>
+        Excepeted Price: <input class="roundTextBox" type="number" value="{{targetItem.eprice}}"/>
+    </view>
+    <view>
+        Base Price: <input class="roundTextBox" type="number" value="{{targetItem.bprice}}"/>
+    </view>
+</view>
+
+<view class="botArea">
+    <block wx:if="{{targetItem.itemId != -1}}">
+        <button type="warn">Delete</button>
+    </block>
+    <view class="cancleSaveArea">
+        <button type="default" plain="true">Cancle</button>
+        <button type="primary" plain="true">Save</button>
+    </view>
+</view>
