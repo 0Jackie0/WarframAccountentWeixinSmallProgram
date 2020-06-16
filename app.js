@@ -14,11 +14,11 @@ App({
       listContent: [
         {
           orderId: 1,
-          orderName: "Name"
+          orderName: "名称"
         },
         {
           orderId: 2,
-          orderName: "Quantity"
+          orderName: "数量"
         }
       ]
     }

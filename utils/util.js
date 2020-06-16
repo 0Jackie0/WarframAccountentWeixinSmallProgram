@@ -14,6 +14,10 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+// const serverURL = "http://localhost:28590/api/"
+const serverURL = "http://192.168.1.52:28590/api/"
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  serverURL: serverURL
 }

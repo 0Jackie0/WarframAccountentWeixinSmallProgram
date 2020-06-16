@@ -1,44 +1,44 @@
 <!--pages/mainpage/mainpage.wxml-->
 
 <view class="addButtonArea">
-  <button type="primary" bindtap="changePage" data-action="add">Add</button>
+  <button type="primary" bindtap="changePage" data-action="add">新增</button>
 </view>
 
 <view class="searchArea">
-  Search: <input type="text" class="roundTextBox"></input>
+  搜索: <input type="text" class="roundTextBox" placeholder="物品名称" bindinput="searchFunction"></input>
 </view>
 
 <view class="filterArea">
   <picker bindchange="changeFilter" value="{{index}}" range="{{itemTypeList.listContent}}" range-key="typeName">
     <view class="pickerArea">
-      Filter By：{{itemTypeList.listContent[itemTypeList.selected].typeName}}
+      筛选：<view class="pickerSelection">{{itemTypeList.listContent[itemTypeList.selected].typeName}}</view>
     </view>
   </picker>
   <picker bindchange="changeOrder" value="{{index}}" range="{{orderList.listContent}}" range-key="orderName">
     <view class="pickerArea">
-      Order By：{{orderList.listContent[orderList.selected].orderName}}
+      排序：<view class="pickerSelection">{{orderList.listContent[orderList.selected].orderName}}</view>
     </view>
   </picker>
 </view>
 
 <view class="listHeaderArea">
-  <text>Total Quantity: {{totalQuantity}}</text>
-  <text> Total Price: {{totalPrice}}</text>
+  <text>总数量: {{totalQuantity}}</text>
+  <text> 总价(期望): {{totalPrice}} P</text>
 </view>
 
 <view class="listArea">
   <view wx:for="{{itemList}}" wx:key="itemId" wx:for-index="index" class="listContentArea">
     <image bindtap="changePage" data-action="edit" data-targetid="{{item.itemId}}" data-target-index="{{index}}" src="{{item.imageString != '' ? 'data:image/png;base64,' + item.imageString : '../../drawable/220px-Warframe_Cover_Art.png'}}" mode="aspectFit" class="itemImageSize"/>
     <view class="informationArea" bindtap="changePage" data-action="edit" data-targetid="{{item.itemId}}" data-target-index="{{index}}">
-      <text>Item Name: {{item.name}}</text>
-      <text>Quantity: {{item.quantity}}</text>
-      <text>Excepted Price: {{item.eprice}}</text>
-      <text>Base Price: {{item.bprice}}</text>
+      <text>物品名称: {{item.name}}</text>
+      <text>数量: {{item.quantity}}</text>
+      <text>期望价格: {{item.eprice}}</text>
+      <text>低价: {{item.bprice}}</text>
     </view>
     
     <view class="listButtonArea">
-      <button style="width:50rpx" class="buttonArea"><image src="../../drawable/up-arrow.png" class="iconSize" mode="aspectFit"/></button>
-      <button style="width:50rpx" class="buttonArea"><image src="../../drawable/down-arrow.png" class="iconSize" mode="aspectFit"/></button>
+      <button style="width:50rpx" class="buttonArea" bindtap="changeOneQuantity" data-action="add" data-target-id="{{item.itemId}}" data-target-index="{{index}}"><image src="../../drawable/up-arrow.png" class="iconSize" mode="aspectFit"/></button>
+      <button style="width:50rpx" class="buttonArea" bindtap="changeOneQuantity" data-action="remove" data-target-id="{{item.itemId}}" data-target-index="{{index}}"><image src="../../drawable/down-arrow.png" class="iconSize" mode="aspectFit"/></button>
     </view>
   </view>
 </view>

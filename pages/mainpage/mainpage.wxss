@@ -10,6 +10,8 @@ page
 .addButtonArea
 {
   margin-bottom: 20rpx;
+  width: 95%;
+  
 }
 
 .searchArea
@@ -17,6 +19,8 @@ page
   margin-bottom: 20rpx;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  width: 95%;
 }
 .roundTextBox
 {
@@ -39,6 +43,11 @@ page
 {
   background-color: #d7ecff;
   border: 5rpx solid #a4d4ff;
+}
+.pickerSelection
+{
+  background-color: #ecf7ff;
+  border: 2.5rpx solid #aef3ff;
 }
 
 .listHeaderArea
@@ -63,7 +72,7 @@ page
 {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   height: 250rpx;

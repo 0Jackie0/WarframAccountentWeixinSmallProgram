@@ -7,6 +7,60 @@ page
   background-color: #fcfcfc;
 }
 
+.pageContainer
+{
+  width: 90%;
+}
+
+.topArea
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+  height: 250rpx;
+}
+.nameQuantityArea
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.midArea
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.pickerContainer
+{
+  margin-bottom: 20rpx;
+}
+.pickerArea
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #d7ecff;
+  border: 5rpx solid #a4d4ff;
+}
+.pickerSelection
+{
+  background-color: #ecf7ff;
+  border: 2.5rpx solid #aef3ff;
+}
+
+.botArea
+{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 10rpx;
+  width: 90%;
+}
+
 .cancleSaveArea
 {
     display: flex;
@@ -25,5 +79,5 @@ page
   background-color: #ffffff;
   border-radius: 25rpx;
   border: 5rpx solid #d7ecff;
-  width: 500rpx;
+  width: 450rpx;
 }
