@@ -17,11 +17,19 @@ Page({
      */
     onLoad: function (options) {
         // console.log(options)
+        let tempTypeList = {
+            selected: 0,
+            listContent: []
+        }
+
+        for(let index = 1; index < APP.globalData.itemTypeList.listContent.length; index ++)
+        {
+            tempTypeList.listContent.push(APP.globalData.itemTypeList.listContent[index])
+        }
+
+
         if(options.targetId)
         {
-            let tempTypeList = APP.globalData.itemTypeList
-            tempTypeList.listContent.shift()
-
             for(let index  in tempTypeList.listContent)
             {
                 if(tempTypeList.listContent[index].typeId == APP.globalData.itemList[options.targetIndex].type)
@@ -40,10 +48,6 @@ Page({
         }
         else
         {
-            let tempTypeList = APP.globalData.itemTypeList
-            tempTypeList.listContent.shift()
-            tempTypeList.selected = 0
-            
             this.setData(
                 {
                     targetItem: {
@@ -186,7 +190,6 @@ Page({
                 {
                   wx.navigateBack({
                     complete: (res) => {
-      
                     },
                   })
                 },
