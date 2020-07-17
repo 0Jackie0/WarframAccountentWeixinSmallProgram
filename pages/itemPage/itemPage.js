@@ -2,6 +2,8 @@
 const APP = getApp()
 const Utill = require("../../utils/util")
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
 Page({
 
     /**
@@ -9,14 +11,15 @@ Page({
      */
     data: {
         targetItem: {},
-        itemTypeList: {}
+        itemTypeList: {},
+        errorMessage: "",
+        checkValue: true
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        // console.log(options)
         let tempTypeList = {
             selected: 0,
             listContent: []
@@ -28,7 +31,7 @@ Page({
         }
 
 
-        if(options.targetId)
+        if(options.targetId)//edit item
         {
             for(let index  in tempTypeList.listContent)
             {
@@ -42,11 +45,12 @@ Page({
             this.setData(
                 {
                     targetItem: APP.globalData.itemList[options.targetIndex],
-                    itemTypeList: tempTypeList
+                    itemTypeList: tempTypeList,
+                    checkValue: APP.globalData.itemList[options.targetIndex].name != ""
                 }
             )
         }
-        else
+        else//add item
         {
             this.setData(
                 {
@@ -59,7 +63,8 @@ Page({
                         eprice: 0,
                         bprice: 0
                     },
-                    itemTypeList: tempTypeList
+                    itemTypeList: tempTypeList,
+                    checkValue: false
                 }
             )
         }
@@ -82,27 +87,59 @@ Page({
     changeTextBox: function(event)
     {
         let tempTargetObj = this.data.targetItem
+        let checkResult = true;
+        let message = "";
 
-        if(event.target.dataset.field == "name")
+        if(event.target.dataset.field == "name")// name
         {
-            tempTargetObj.name = event.detail.value
+            if (event.detail.value == "")
+            {
+                checkResult = false;
+                message = "物品名称不能为空";
+            }
+            tempTargetObj.name = event.detail.value;
         }
-        else if (event.target.dataset.field == "quantity")
+        else if (event.target.dataset.field == "quantity")// Quantity
         {
-            tempTargetObj.quantity = event.detail.value
+            if(event.detail.value == "")
+            {
+                tempTargetObj.quantity = 0;
+            }
+            else if (isNaN(event.detail.value) == false)
+            {
+                tempTargetObj.quantity = parseInt(event.detail.value);
+            }
+            
         }
-        else if (event.target.dataset.field == "eprice")
+        else if (event.target.dataset.field == "eprice")// E price
         {
-            tempTargetObj.eprice = event.detail.value
+            if(event.detail.value == "")
+            {
+                tempTargetObj.eprice = 0;
+            }
+            else if (isNaN(event.detail.value) == false)
+            {
+                tempTargetObj.eprice = parseInt(event.detail.value)
+            }
+            
         }
-        else
+        else// B price
         {
-            tempTargetObj.bprice = event.detail.value
+            if(event.detail.value == "")
+            {
+                tempTargetObj.bprice = 0;
+            }
+            else if (isNaN(event.detail.value) == false)
+            {
+                tempTargetObj.bprice = parseInt(event.detail.value)
+            }
         }
 
         this.setData(
             {
-                targetItem: tempTargetObj
+                targetItem: tempTargetObj,
+                errorMessage: message,
+                checkValue: checkResult
             }
         )
     }, 
@@ -115,24 +152,36 @@ Page({
         wx.chooseImage({
             count: 1,
             success: (res) => {
-              //tempFilePaths  图片的本地临时文件路径列表
-              let path = res.tempFilePaths[0]
+                if (res.tempFiles[0].size > MAX_FILE_SIZE)
+                {
+                    hostPage.setData(
+                        {
+                            errorMessage: "图片必须小于 2M"
+                        }
+                    )
+                }
+                else
+                {
+                    //tempFilePaths  图片的本地临时文件路径列表
+                    let path = res.tempFiles[0].path
 
-              wx.getFileSystemManager().readFile(
-                  {
-                    filePath: path,
-                    encoding: "base64",
-                    success: function(data)
-                    {
-                        tempTarget.imageString = data.data
-                        hostPage.setData(
-                            {
-                                targetItem: tempTarget
-                            }
-                        )
-                    }
-                  }
-              )
+                    wx.getFileSystemManager().readFile(
+                        {
+                        filePath: path,
+                        encoding: "base64",
+                        success: function(data)
+                        {
+                            tempTarget.imageString = data.data
+                            hostPage.setData(
+                                {
+                                    targetItem: tempTarget,
+                                    errorMessage: ""
+                                }
+                            )
+                        }
+                        }
+                    )
+                }
             },
           })
     },
@@ -180,44 +229,55 @@ Page({
     },
     saveFunction: function(event)
     {
-        if(this.data.targetItem.itemId == -1)
+        if(this.data.checkValue == true)
         {
-            wx.request({
-                url: Utill.serverURL + "item/new",
-                method: "POST",
-                data: this.data.targetItem,
-                success (respond)
-                {
-                  wx.navigateBack({
-                    complete: (res) => {
+            if(this.data.targetItem.itemId == -1)//Add item
+            {
+                wx.request({
+                    url: Utill.serverURL + "item/new",
+                    method: "POST",
+                    data: this.data.targetItem,
+                    success (respond)
+                    {
+                    wx.navigateBack({
+                        complete: (res) => {
+                        },
+                    })
                     },
-                  })
-                },
-                fail(exception)
-                {
-                  console.log(exception)
-                }
-              })
+                    fail(exception)
+                    {
+                    console.log(exception)
+                    }
+                })
+            }
+            else//Save edit
+            {
+                wx.request({
+                    url: Utill.serverURL + "item/one",
+                    method: "PUT",
+                    data: this.data.targetItem,
+                    success (respond)
+                    {
+                    wx.navigateBack({
+                        complete: (res) => {
+        
+                        },
+                    })
+                    },
+                    fail(exception)
+                    {
+                    console.log(exception)
+                    }
+                })
+            }
         }
         else
         {
-            wx.request({
-                url: Utill.serverURL + "item/one",
-                method: "PUT",
-                data: this.data.targetItem,
-                success (respond)
+            this.setData(
                 {
-                  wx.navigateBack({
-                    complete: (res) => {
-      
-                    },
-                  })
-                },
-                fail(exception)
-                {
-                  console.log(exception)
+                    errorMessage: "请检查输入的数据"
                 }
-              })
+            );
         }
     },
     cancleFunction: function(event)

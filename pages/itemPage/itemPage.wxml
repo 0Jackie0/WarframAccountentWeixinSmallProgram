@@ -29,6 +29,10 @@
         </view>
     </view>
 
+    <view class="errorMessageRead">
+        <text class="errorMessageStyle" wx:if="{errorMessage != ''}">{{errorMessage}}</text>
+    </view>
+
     <view class="botArea">
         <block wx:if="{{targetItem.itemId != -1}}">
             <button type="warn" bindtap="deleteFunction">删除</button>
