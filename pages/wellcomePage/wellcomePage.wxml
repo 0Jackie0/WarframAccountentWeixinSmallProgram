@@ -1,0 +1,13 @@
+<view id="wellcomPage">
+    <view class="areaButton" catchtap="goMainPage">
+
+    </view>
+    <view id="videoContainer">
+        <video autoplay loop show-progress show-mute-btn enable-play-gesture vslide-gesture-in-fullscreen
+            show-fullscreen-btn show-play-btn show-center-play-btn enable-auto-rotation show-screen-lock-button
+            object-fit="contain" src="{{videoSourceURL}}"/>
+    </view>
+    <view class="areaButton" catchtap="goMainPage">
+
+    </view>
+</view>

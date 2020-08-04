@@ -1,5 +1,6 @@
 {
     "pages": [
+        "pages/wellcomePage/wellcomePage",
         "pages/mainpage/mainpage",
         "pages/itemPage/itemPage"
     ],
